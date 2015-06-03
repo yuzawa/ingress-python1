@@ -1,6 +1,9 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+import sys
+sys.path.insert(1, '/Library/Python/2.7/site-packages')
+
 from gmailapi import GmailApi
 import json
 import sys
