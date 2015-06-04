@@ -5,6 +5,7 @@ sys.path.insert(1, '/Library/Python/2.7/site-packages')
 
 from datetime import datetime
 import os
+import json
 
 from apiclient.discovery import build
 from httplib2 import Http
@@ -23,7 +24,10 @@ CLIENT_SECRET_FILE = 'client_secret.json'
 APPLICATION_NAME = 'Gmail API Quickstart'
 
 def get_attacker(service, id):
-    message = service.users().messages().get(userId='me',id=id)
+    message = service.users().messages().get(userId='me',id=id).execute()
+#    print(json.dumps(message, indent=4))
+    print(message["snippet"])
+    print(message["payload"]["headers"][16]["value"])
 
 
 def get_credentials():
@@ -66,15 +70,15 @@ def main():
 #    results = service.users().labels().list(userId='me').execute()
 #    labels = results.get('labels', [])
 
-    results = service.users().messages().list(userId='me',q="from:ingress-support@google.com" ).execute()
+    results = service.users().messages().list(userId='me',q="from:ingress-support@google.com subject:Ingress Damage Report: Entities attacked by",maxResults="1",pageToken="").execute()
     messages = results.get('messages', [])
 
     if not messages:
         print 'No labels found.'
     else:
-        print 'Messages:'
+#        print 'Messages:'
         for message in messages:
-            print message['id']
+#            print message['id']
             get_attacker(service, message['id'])
 
 
